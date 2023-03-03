@@ -3,8 +3,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import ru.netology.*;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ProductRepositoryTest {
 
@@ -125,7 +124,7 @@ public class ProductRepositoryTest {
 
 
     @Test
-    public void shouldSearchBySmartpone(){
+    public void shouldSearchBySmartphone(){
         Repository repository = new Repository();
         ProductManager manager = new ProductManager(repository);
 
@@ -201,5 +200,42 @@ public class ProductRepositoryTest {
         assertArrayEquals(new boolean[]{expected}, new boolean[] {actual});
     }
 
+    @Test
+    public void shouldDeleteById() {
+        Repository repository = new Repository();
+
+        Book book1 = new Book(1, "Piece of Cake", 154, "Robinson");
+        Book book2 = new Book(2, "One piece", 210, "Oda");
+        Book book3 = new Book(3, "Master and Margarita", 500, "Bulgakov");
+
+        repository.addItem(book1);
+        repository.addItem(book2);
+        repository.addItem(book3);
+
+        repository.removeById(1);
+
+        Product[] expected = {book2, book3};
+        Product[] actual = repository.findAll();
+
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+
+    @Test
+    public void noProductExists() {
+        Repository repository = new Repository();
+
+        Book book1 = new Book(1, "Piece of Cake", 154, "Robinson");
+        Book book2 = new Book(2, "One piece", 210, "Oda");
+        Book book3 = new Book(3, "Master and Margarita", 500, "Bulgakov");
+
+        repository.addItem(book1);
+        repository.addItem(book2);
+        repository.addItem(book3);
+
+        Assertions.assertThrows(NotFoundException.class, () -> {
+            repository.removeById(8);
+        });
+    }
 
 }

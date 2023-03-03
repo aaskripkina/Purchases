@@ -3,6 +3,9 @@ package ru.netology;
 public class Repository {
 
     Product[] items = new Product[0];
+    public Product[] findAll() {
+        return items;
+    }
 
     public Repository() {
 
@@ -35,8 +38,19 @@ public class Repository {
 
     }
 
-    public Product[] findAll() {
-        return items;
+    public Product findById(int id) {
+        for (Product item : items) {
+            if (item.getId() == id) {
+                return item;
+            }
+        }
+        return null;
+    }
+    public void removeById(int id) {
+        if (findById(id) == null) {
+            throw new NotFoundException(id);
+        }
+        deleteItem(id);
     }
 
 }
